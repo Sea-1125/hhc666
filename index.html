@@ -14,14 +14,14 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1a1a1a, #333333);
+            background: linear-gradient(135deg, #141e30, #243b55);
             color: white;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
+            overflow-x: hidden;
             min-height: 100vh;
-            overflow: hidden;
         }
 
         h1 {
@@ -49,7 +49,8 @@
             padding: 30px;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(10px);
-            margin-bottom: 20px;
+            z-index: 2; /* 确保在背景动画之上 */
+            position: relative;
         }
 
         .search-bar {
@@ -137,6 +138,36 @@
             font-size: 1rem;
         }
 
+        /* 背景动画 */
+        .falling-coins {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .falling-coins img {
+            position: absolute;
+            top: -100px;
+            width: 40px;
+            height: 40px;
+            animation: fall 6s linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(calc(100vh + 100px)) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
         /* 开发者信息 */
         .footer {
             width: 100%;
@@ -177,6 +208,13 @@
     </style>
 </head>
 <body>
+    <div class="falling-coins">
+        <!-- 添加虚拟币图标 -->
+        <img src="https://i.imgur.com/QS7kfJJ.png" style="left: 10%;" />
+        <img src="https://i.imgur.com/QS7kfJJ.png" style="left: 40%;" />
+        <img src="https://i.imgur.com/QS7kfJJ.png" style="left: 70%;" />
+    </div>
+
     <h1>加密货币查询</h1>
     <div class="container">
         <div class="search-bar">
@@ -185,6 +223,7 @@
         </div>
         <div class="results" id="results"></div>
     </div>
+
     <div class="footer">
         <img src="https://i.imgur.com/3IvhwDC.jpeg" alt="Sea">
         <div class="info">
