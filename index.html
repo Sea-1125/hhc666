@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>加密货币查询</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         /* 全局样式 */
         * {
@@ -18,115 +17,135 @@
             background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
             color: #fff;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
+            flex-direction: column;
             height: 100vh;
             overflow: hidden;
         }
 
         h1 {
             font-size: 3rem;
-            margin-top: 20px;
+            margin-bottom: 20px;
+            animation: fadeIn 1.5s ease;
             text-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
         }
 
-        /* 动态背景 */
-        .falling-coins {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            overflow: hidden;
-        }
-
-        .coin {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            background-size: cover;
-            animation: fall 5s linear infinite, sway 3s ease-in-out infinite alternate;
-        }
-
-        @keyframes fall {
-            0% { transform: translateY(-100px); opacity: 1; }
-            100% { transform: translateY(100vh); opacity: 0; }
-        }
-
-        @keyframes sway {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(20px); }
-        }
-
-        /* 搜索栏 */
+        /* 搜索栏样式 */
         .search-bar {
-            margin-top: 50px;
-            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
         }
 
-        input, select, button {
-            padding: 15px;
+        input {
+            padding: 15px 20px;
+            width: 300px;
+            font-size: 1rem;
             border: none;
             border-radius: 30px;
-            font-size: 1rem;
-            margin: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
             outline: none;
+            text-align: center;
+            transition: transform 0.3s ease, background 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        input:focus {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
         }
 
         button {
+            padding: 15px 25px;
+            margin-top: 20px;
             background: #1f8ef1;
             color: #fff;
+            border: none;
+            border-radius: 30px;
             cursor: pointer;
-            transition: 0.3s;
+            font-size: 1.1rem;
+            font-weight: bold;
+            box-shadow: 0 8px 20px rgba(31, 142, 241, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         button:hover {
             transform: scale(1.05);
+            box-shadow: 0 12px 30px rgba(31, 142, 241, 0.8);
         }
 
-        /* 加密货币信息 */
+        /* 加密货币信息卡片 */
         .crypto-info {
+            display: none;
             margin-top: 20px;
-            padding: 20px;
+            padding: 30px;
             border-radius: 20px;
             background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             text-align: center;
+            animation: slideIn 1s ease;
+            max-width: 500px;
         }
 
-        /* 收藏夹 */
-        .favorites {
-            margin-top: 20px;
-            text-align: center;
+        .crypto-info img {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 10px;
+            animation: fadeIn 1.5s ease;
         }
 
-        .favorites button {
-            margin: 5px;
+        .crypto-info h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .crypto-info p {
+            font-size: 1.2rem;
+            margin: 5px 0;
+        }
+
+        /* 动画 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* 开发者信息 */
         .developer-info {
-            position: absolute;
-            bottom: 10px;
             text-align: center;
-        }
-
-        /* 图表样式 */
-        .chart-container {
+            font-size: 0.9rem;
+            color: #bbb;
             margin-top: 20px;
-            width: 90%;
-            max-width: 600px;
-            height: 400px;
+            transition: margin-top 0.3s ease; /* 动态调整 */
         }
 
-        /* 响应式 */
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2rem;
-            }
-            .search-bar input, .search-bar select, .search-bar button {
-                width: 80%;
-            }
+        .developer-info img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        .developer-info p {
+            margin: 5px 0;
+        }
+
+        .developer-info a {
+            color: #1f8ef1;
+            text-decoration: none;
+        }
+
+        .developer-info a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -134,165 +153,59 @@
     <h1>加密货币查询</h1>
     <div class="search-bar">
         <input type="text" id="crypto" placeholder="请输入加密货币名称，例如：bitcoin">
-        <select id="currency">
-            <option value="usd">美元</option>
-            <option value="eur">欧元</option>
-            <option value="cny">人民币</option>
-        </select>
         <button onclick="fetchCrypto()">查询</button>
-        <button onclick="addFavorite()">加入收藏</button>
+    </div>
+    <div id="crypto-info" class="crypto-info">
+        <img id="crypto-icon" alt="加密货币图标">
+        <h2 id="crypto-name"></h2>
+        <p id="crypto-price"></p>
+        <p id="crypto-change"></p>
+        <p id="crypto-volume"></p>
     </div>
 
-    <div class="crypto-info" id="crypto-info"></div>
-    <div class="favorites" id="favorites">
-        <h3>收藏夹</h3>
-        <div id="favorites-list"></div>
-    </div>
-
-    <!-- 实时走势图表 -->
-    <div class="chart-container" id="chart-container" style="display:none;">
-        <canvas id="cryptoChart"></canvas>
-    </div>
-
-    <div class="developer-info">
+    <div class="developer-info" id="developer-info">
+        <img src="https://i.imgur.com/3IvhwDC.jpeg" alt="开发者头像">
         <p>开发者：Sea</p>
         <p>邮箱：cxezysyf4843@gmail.com</p>
         <p>Telegram：liwuyyds</p>
         <p>© 2024 Sea Studio</p>
     </div>
 
-    <div class="falling-coins" id="falling-coins"></div>
-
     <script>
         const apiKey = 'dfddbbb4-2f2a-43fd-8ad0-2d1c039aa789';
 
         async function fetchCrypto() {
             const crypto = document.getElementById('crypto').value.trim().toLowerCase();
-            const currency = document.getElementById('currency').value;
+            const developerInfo = document.getElementById('developer-info');
             if (!crypto) {
                 alert("请输入加密货币名称！");
                 return;
             }
 
-            const url = `https://api.coingecko.com/api/v3/simple/price?ids=${crypto}&vs_currencies=${currency}`;
+            const url = `https://api.coingecko.com/api/v3/coins/${crypto}`;
+
             try {
                 const response = await fetch(url);
+                if (!response.ok) throw new Error("找不到该加密货币");
+                
                 const data = await response.json();
-                if (!data[crypto]) throw new Error("未找到该加密货币");
 
-                document.getElementById('crypto-info').innerHTML = `
-                    <p>货币：${crypto.toUpperCase()}</p>
-                    <p>价格：${data[crypto][currency]} ${currency.toUpperCase()}</p>
-                `;
-
-                // 查询并显示实时走势图
-                fetchChartData(crypto);
+                // 更新加密货币数据
+                document.getElementById('crypto-icon').src = data.image.large;
+                document.getElementById('crypto-name').textContent = data.name + ` (${data.symbol.toUpperCase()})`;
+                document.getElementById('crypto-price').textContent = `当前价格：$${data.market_data.current_price.usd}`;
+                document.getElementById('crypto-change').textContent = `24小时涨跌幅：${data.market_data.price_change_percentage_24h.toFixed(2)}%`;
+                document.getElementById('crypto-volume').textContent = `24小时交易量：$${data.market_data.total_volume.usd.toLocaleString()}`;
+                
+                document.getElementById('crypto-info').style.display = 'block';
+                
+                // 动态调整开发者信息的位置
+                developerInfo.style.marginTop = '50px';
             } catch (error) {
-                alert(error.message);
+                alert("查询失败，请检查名称！");
+                console.error(error);
             }
         }
-
-        async function fetchChartData(crypto) {
-            const url = `https://api.coingecko.com/api/v3/coins/${crypto}/market_chart?vs_currency=usd&days=7`;
-            try {
-                const response = await fetch(url);
-                const data = await response.json();
-                const chartData = data.prices.map(item => ({
-                    x: new Date(item[0]),
-                    y: item[1]
-                }));
-
-                displayChart(chartData);
-            } catch (error) {
-                console.error("无法获取图表数据", error);
-            }
-        }
-
-        function displayChart(data) {
-            const ctx = document.getElementById('cryptoChart').getContext('2d');
-            const chart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    datasets: [{
-                        label: '价格 (USD)',
-                        data: data,
-                        borderColor: '#1f8ef1',
-                        backgroundColor: 'rgba(31, 142, 241, 0.2)',
-                        borderWidth: 2,
-                        pointRadius: 0,
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        x: {
-                            type: 'time',
-                            time: {
-                                unit: 'day',
-                                tooltipFormat: 'll'
-                            }
-                        },
-                        y: {
-                            beginAtZero: false,
-                            ticks: {
-                                callback: function(value) {
-                                    return '$' + value.toFixed(2);
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-            document.getElementById('chart-container').style.display = 'block';
-        }
-
-        function addFavorite() {
-            const crypto = document.getElementById('crypto').value.trim();
-            if (!crypto) {
-                alert("请输入货币名称！");
-                return;
-            }
-
-            const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-            if (!favorites.includes(crypto)) {
-                favorites.push(crypto);
-                localStorage.setItem('favorites', JSON.stringify(favorites));
-                updateFavorites();
-            }
-        }
-
-        function updateFavorites() {
-            const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-            const favoritesList = document.getElementById('favorites-list');
-            favoritesList.innerHTML = '';
-            favorites.forEach(fav => {
-                const button = document.createElement('button');
-                button.textContent = fav;
-                button.onclick = () => {
-                    document.getElementById('crypto').value = fav;
-                    fetchCrypto();
-                };
-                favoritesList.appendChild(button);
-            });
-        }
-
-        function createCoins() {
-            const coins = document.getElementById('falling-coins');
-            for (let i = 0; i < 20; i++) {
-                const coin = document.createElement('div');
-                coin.classList.add('coin');
-                coin.style.backgroundImage = "url('https://via.placeholder.com/40/ffd700')";
-                coin.style.left = Math.random() * 100 + 'vw';
-                coin.style.animationDelay = Math.random() * 5 + 's';
-                coin.style.animationDuration = 3 + Math.random() * 5 + 's';
-                coins.appendChild(coin);
-            }
-        }
-
-        window.onload = () => {
-            updateFavorites();
-            createCoins();
-        };
     </script>
 </body>
 </html>
