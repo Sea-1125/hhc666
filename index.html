@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple HTML Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        header {
+            background: #4CAF50;
+            width: 100%;
+            padding: 10px 0;
+            text-align: center;
+            color: white;
+            font-size: 1.8rem;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            text-align: center;
+        }
+        img {
+            width: 100%;
+            max-width: 300px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background: #4CAF50;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        Welcome to My Simple Page
+    </header>
+
+    <div class="container">
+        <h1>Hello, World!</h1>
+        <p>This is a simple HTML page example. You can add more content and customize it as you like!</p>
+        <img src="https://via.placeholder.com/300" alt="Placeholder Image">
+        <p>Click the button below to learn more:</p>
+        <button onclick="alert('You clicked the button!')">Click Me</button>
+    </div>
+
+    <footer>
+        © 2024 Simple HTML Example
+    </footer>
+</body>
+</html>
