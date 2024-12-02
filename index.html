@@ -22,6 +22,7 @@
             flex-direction: column;
             height: 100vh;
             overflow: hidden;
+            position: relative;
         }
 
         h1 {
@@ -49,13 +50,14 @@
             color: #fff;
             outline: none;
             text-align: center;
-            transition: transform 0.3s ease, background 0.3s ease;
+            transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
         }
 
         input:focus {
             background: rgba(255, 255, 255, 0.2);
             transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(31, 142, 241, 0.5);
         }
 
         button {
@@ -69,12 +71,17 @@
             font-size: 1.1rem;
             font-weight: bold;
             box-shadow: 0 8px 20px rgba(31, 142, 241, 0.5);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
         }
 
         button:hover {
             transform: scale(1.05);
             box-shadow: 0 12px 30px rgba(31, 142, 241, 0.8);
+        }
+
+        button:active {
+            transform: scale(0.98);
+            box-shadow: 0 6px 15px rgba(31, 142, 241, 0.3);
         }
 
         /* 加密货币信息卡片 */
@@ -88,6 +95,12 @@
             text-align: center;
             animation: slideIn 1s ease;
             max-width: 500px;
+            transition: transform 0.3s ease;
+        }
+
+        .crypto-info:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
         }
 
         .crypto-info img {
@@ -123,8 +136,8 @@
             text-align: center;
             font-size: 0.9rem;
             color: #bbb;
-            margin-top: 20px;
-            transition: margin-top 0.3s ease; /* 动态调整 */
+            margin-top: 50px;
+            transition: margin-top 0.3s ease;
         }
 
         .developer-info img {
@@ -133,6 +146,7 @@
             border-radius: 50%;
             margin-bottom: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+            border: 2px solid #fff;
         }
 
         .developer-info p {
@@ -142,14 +156,54 @@
         .developer-info a {
             color: #1f8ef1;
             text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
         }
 
         .developer-info a:hover {
             text-decoration: underline;
+            color: #155d94;
+        }
+
+        .developer-info a:active {
+            color: #003f6c;
+        }
+
+        /* 粒子效果 */
+        .particle-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            background: url('https://cdn.pixabay.com/photo/2017/08/30/01/36/cryptocurrency-2696276_960_720.jpg') no-repeat center center fixed;
+            background-size: cover;
+            animation: particleAnimation 10s linear infinite;
+        }
+
+        @keyframes particleAnimation {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-100%); }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            input {
+                width: 80%;
+            }
+            .crypto-info {
+                width: 90%;
+                padding: 20px;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- 粒子背景 -->
+    <div class="particle-background"></div>
+
     <h1>加密货币查询</h1>
     <div class="search-bar">
         <input type="text" id="crypto" placeholder="请输入加密货币名称，例如：bitcoin">
@@ -196,14 +250,15 @@
                 document.getElementById('crypto-price').textContent = `当前价格：$${data.market_data.current_price.usd}`;
                 document.getElementById('crypto-change').textContent = `24小时涨跌幅：${data.market_data.price_change_percentage_24h.toFixed(2)}%`;
                 document.getElementById('crypto-volume').textContent = `24小时交易量：$${data.market_data.total_volume.usd.toLocaleString()}`;
-                
+
+                // 显示卡片
                 document.getElementById('crypto-info').style.display = 'block';
-                
-                // 动态调整开发者信息的位置
-                developerInfo.style.marginTop = '50px';
+
+                // 隐藏开发者信息
+                developerInfo.style.marginTop = '20px';
+
             } catch (error) {
-                alert("查询失败，请检查名称！");
-                console.error(error);
+                alert("未找到该加密货币，请检查名称并重试");
             }
         }
     </script>
