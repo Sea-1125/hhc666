@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cryptocurrency Tracker</title>
+    <title>加密货币查询</title>
     <style>
         /* 全局样式 */
         * {
@@ -121,7 +121,7 @@
         /* 开发者信息 */
         .developer-info {
             position: absolute;
-            bottom: 20px;
+            bottom: 10px;
             text-align: center;
             font-size: 0.9rem;
             color: #bbb;
@@ -150,13 +150,13 @@
     </style>
 </head>
 <body>
-    <h1>Cryptocurrency Tracker</h1>
+    <h1>加密货币查询</h1>
     <div class="search-bar">
-        <input type="text" id="crypto" placeholder="Enter cryptocurrency name">
-        <button onclick="fetchCrypto()">Search</button>
+        <input type="text" id="crypto" placeholder="请输入加密货币名称，例如：bitcoin">
+        <button onclick="fetchCrypto()">查询</button>
     </div>
     <div id="crypto-info" class="crypto-info">
-        <img id="crypto-icon" alt="Crypto Icon">
+        <img id="crypto-icon" alt="加密货币图标">
         <h2 id="crypto-name"></h2>
         <p id="crypto-price"></p>
         <p id="crypto-change"></p>
@@ -164,10 +164,10 @@
     </div>
 
     <div class="developer-info">
-        <img src="https://i.imgur.com/3IvhwDC.jpeg" alt="Developer">
-        <p>Developer: Sea</p>
-        <p>Email: cxezysyf4843@gmail.com</p>
-        <p>Telegram: liwuyyds</p>
+        <img src="https://i.imgur.com/3IvhwDC.jpeg" alt="开发者头像">
+        <p>开发者：Sea</p>
+        <p>邮箱：cxezysyf4843@gmail.com</p>
+        <p>Telegram：liwuyyds</p>
         <p>© 2024 Sea Studio</p>
     </div>
 
@@ -177,7 +177,7 @@
         async function fetchCrypto() {
             const crypto = document.getElementById('crypto').value.trim().toLowerCase();
             if (!crypto) {
-                alert("Please enter a cryptocurrency name!");
+                alert("请输入加密货币名称！");
                 return;
             }
 
@@ -185,20 +185,20 @@
 
             try {
                 const response = await fetch(url);
-                if (!response.ok) throw new Error("Cryptocurrency not found");
+                if (!response.ok) throw new Error("找不到该加密货币");
                 
                 const data = await response.json();
 
-                // Update UI with crypto data
+                // 更新加密货币数据
                 document.getElementById('crypto-icon').src = data.image.large;
                 document.getElementById('crypto-name').textContent = data.name + ` (${data.symbol.toUpperCase()})`;
-                document.getElementById('crypto-price').textContent = `Current Price: $${data.market_data.current_price.usd}`;
-                document.getElementById('crypto-change').textContent = `24h Change: ${data.market_data.price_change_percentage_24h.toFixed(2)}%`;
-                document.getElementById('crypto-volume').textContent = `24h Volume: $${data.market_data.total_volume.usd.toLocaleString()}`;
+                document.getElementById('crypto-price').textContent = `当前价格：$${data.market_data.current_price.usd}`;
+                document.getElementById('crypto-change').textContent = `24小时涨跌幅：${data.market_data.price_change_percentage_24h.toFixed(2)}%`;
+                document.getElementById('crypto-volume').textContent = `24小时交易量：$${data.market_data.total_volume.usd.toLocaleString()}`;
                 
                 document.getElementById('crypto-info').style.display = 'block';
             } catch (error) {
-                alert("Error fetching cryptocurrency data.");
+                alert("查询失败，请检查名称！");
                 console.error(error);
             }
         }
