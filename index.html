@@ -13,46 +13,25 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #141e30, #243b55);
-            color: white;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #fff;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            justify-content: space-between;
-            overflow-x: hidden;
-            min-height: 100vh;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
         }
 
         h1 {
-            margin-top: 20px;
-            font-size: 2.5rem;
-            color: #00e0d3;
-            text-shadow: 0 0 10px #00e0d3, 0 0 20px #00e0d3;
-            animation: glow 1.5s infinite alternate;
+            font-size: 3rem;
+            margin-bottom: 20px;
+            animation: fadeIn 1.5s ease;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
         }
 
-        @keyframes glow {
-            from {
-                text-shadow: 0 0 10px #00e0d3, 0 0 20px #00e0d3;
-            }
-            to {
-                text-shadow: 0 0 20px #00e0d3, 0 0 40px #00e0d3;
-            }
-        }
-
-        .container {
-            width: 90%;
-            max-width: 800px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
-            z-index: 2; /* 确保在背景动画之上 */
-            position: relative;
-        }
-
+        /* 搜索栏样式 */
         .search-bar {
             display: flex;
             flex-direction: column;
@@ -60,212 +39,170 @@
             margin-bottom: 30px;
         }
 
-        .search-bar input {
-            width: 80%;
-            padding: 10px 15px;
-            font-size: 1.2rem;
-            color: #fff;
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid #00e0d3;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            outline: none;
-            transition: all 0.3s ease;
-        }
-
-        .search-bar input:focus {
-            background: rgba(0, 0, 0, 0.8);
-            border-color: #00e0d3;
-            transform: scale(1.05);
-        }
-
-        .search-bar button {
-            padding: 10px 20px;
-            font-size: 1.2rem;
-            color: #fff;
-            background: #00e0d3;
+        input {
+            padding: 15px 20px;
+            width: 300px;
+            font-size: 1rem;
             border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-        }
-
-        .search-bar button:hover {
-            background: #00c7b7;
-            transform: scale(1.1);
-        }
-
-        .results {
-            margin-top: 20px;
-            display: none;
-        }
-
-        .results h2 {
-            font-size: 1.8rem;
-            margin-bottom: 20px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            outline: none;
             text-align: center;
+            transition: transform 0.3s ease, background 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
         }
 
-        .results .crypto-info {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            padding: 15px;
-            background: rgba(0, 0, 0, 0.8);
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-            transition: transform 0.3s ease;
-        }
-
-        .results .crypto-info:hover {
+        input:focus {
+            background: rgba(255, 255, 255, 0.2);
             transform: scale(1.05);
+        }
+
+        button {
+            padding: 15px 25px;
+            margin-top: 20px;
+            background: #1f8ef1;
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            box-shadow: 0 8px 20px rgba(31, 142, 241, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 30px rgba(31, 142, 241, 0.8);
+        }
+
+        /* 加密货币信息卡片 */
+        .crypto-info {
+            display: none;
+            margin-top: 20px;
+            padding: 30px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            animation: slideIn 1s ease;
+            max-width: 500px;
         }
 
         .crypto-info img {
-            width: 50px;
-            height: 50px;
-            margin-right: 15px;
+            width: 60px;
+            height: 60px;
+            margin-bottom: 10px;
+            animation: fadeIn 1.5s ease;
         }
 
-        .crypto-details {
-            flex-grow: 1;
+        .crypto-info h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
         }
 
-        .crypto-details p {
+        .crypto-info p {
+            font-size: 1.2rem;
             margin: 5px 0;
-            font-size: 1rem;
         }
 
-        /* 背景动画 */
-        .falling-coins {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: 1;
+        /* 动画 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
         }
 
-        .falling-coins img {
-            position: absolute;
-            top: -100px;
-            width: 40px;
-            height: 40px;
-            animation: fall 6s linear infinite;
-        }
-
-        @keyframes fall {
-            0% {
-                transform: translateY(-100px) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(calc(100vh + 100px)) rotate(360deg);
-                opacity: 0;
-            }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* 开发者信息 */
-        .footer {
-            width: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 20px;
-            position: relative;
-        }
-
-        .footer img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
-        }
-
-        .footer .info {
-            color: #aaa;
-            text-align: left;
+        .developer-info {
+            text-align: center;
             font-size: 0.9rem;
+            color: #bbb;
+            margin-top: 20px;
+            transition: margin-top 0.3s ease; /* 动态调整 */
         }
 
-        .footer .info p {
+        .developer-info img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        .developer-info p {
             margin: 5px 0;
         }
 
-        .footer .info a {
-            color: #00e0d3;
+        .developer-info a {
+            color: #1f8ef1;
             text-decoration: none;
-            transition: color 0.3s ease;
         }
 
-        .footer .info a:hover {
-            color: #00c7b7;
+        .developer-info a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
-    <div class="falling-coins">
-        <!-- 添加虚拟币图标 -->
-        <img src="https://i.imgur.com/QS7kfJJ.png" style="left: 10%;" />
-        <img src="https://i.imgur.com/QS7kfJJ.png" style="left: 40%;" />
-        <img src="https://i.imgur.com/QS7kfJJ.png" style="left: 70%;" />
-    </div>
-
     <h1>加密货币查询</h1>
-    <div class="container">
-        <div class="search-bar">
-            <input id="crypto-input" type="text" placeholder="输入加密货币名称（例如：bitcoin）" />
-            <button onclick="fetchCrypto()">查询</button>
-        </div>
-        <div class="results" id="results"></div>
+    <div class="search-bar">
+        <input type="text" id="crypto" placeholder="请输入加密货币名称，例如：bitcoin">
+        <button onclick="fetchCrypto()">查询</button>
+    </div>
+    <div id="crypto-info" class="crypto-info">
+        <img id="crypto-icon" alt="加密货币图标">
+        <h2 id="crypto-name"></h2>
+        <p id="crypto-price"></p>
+        <p id="crypto-change"></p>
+        <p id="crypto-volume"></p>
     </div>
 
-    <div class="footer">
-        <img src="https://i.imgur.com/3IvhwDC.jpeg" alt="Sea">
-        <div class="info">
-            <p>开发者：Sea</p>
-            <p>Email: cxezysyf4843@gmail.com</p>
-            <p>Telegram: liwuyyds</p>
-            <p>© 2024 Sea Studio</p>
-        </div>
+    <div class="developer-info" id="developer-info">
+        <img src="https://i.imgur.com/3IvhwDC.jpeg" alt="开发者头像">
+        <p>开发者：Sea</p>
+        <p>邮箱：cxezysyf4843@gmail.com</p>
+        <p>Telegram：liwuyyds</p>
+        <p>© 2024 Sea Studio</p>
     </div>
 
     <script>
+        const apiKey = 'dfddbbb4-2f2a-43fd-8ad0-2d1c039aa789';
+
         async function fetchCrypto() {
-            const cryptoName = document.getElementById("crypto-input").value.trim();
-            if (!cryptoName) {
+            const crypto = document.getElementById('crypto').value.trim().toLowerCase();
+            const developerInfo = document.getElementById('developer-info');
+            if (!crypto) {
                 alert("请输入加密货币名称！");
                 return;
             }
 
-            const apiKey = "dfddbbb4-2f2a-43fd-8ad0-2d1c039aa789";
-            const url = `https://api.coingecko.com/api/v3/coins/${cryptoName.toLowerCase()}`;
+            const url = `https://api.coingecko.com/api/v3/coins/${crypto}`;
 
             try {
                 const response = await fetch(url);
-                if (!response.ok) throw new Error("无法找到加密货币信息！");
+                if (!response.ok) throw new Error("找不到该加密货币");
+                
                 const data = await response.json();
 
-                const results = document.getElementById("results");
-                results.style.display = "block";
-                results.innerHTML = `
-                    <h2>加密货币信息</h2>
-                    <div class="crypto-info">
-                        <img src="${data.image.small}" alt="${data.name}">
-                        <div class="crypto-details">
-                            <p>名称：${data.name}</p>
-                            <p>符号：${data.symbol.toUpperCase()}</p>
-                            <p>当前价格：$${data.market_data.current_price.usd.toFixed(2)}</p>
-                            <p>24小时涨幅：${data.market_data.price_change_percentage_24h.toFixed(2)}%</p>
-                        </div>
-                    </div>
-                `;
+                // 更新加密货币数据
+                document.getElementById('crypto-icon').src = data.image.large;
+                document.getElementById('crypto-name').textContent = data.name + ` (${data.symbol.toUpperCase()})`;
+                document.getElementById('crypto-price').textContent = `当前价格：$${data.market_data.current_price.usd}`;
+                document.getElementById('crypto-change').textContent = `24小时涨跌幅：${data.market_data.price_change_percentage_24h.toFixed(2)}%`;
+                document.getElementById('crypto-volume').textContent = `24小时交易量：$${data.market_data.total_volume.usd.toLocaleString()}`;
+                
+                document.getElementById('crypto-info').style.display = 'block';
+                
+                // 动态调整开发者信息的位置
+                developerInfo.style.marginTop = '50px';
             } catch (error) {
-                alert("获取信息失败，请检查加密货币名称！");
+                alert("查询失败，请检查名称！");
                 console.error(error);
             }
         }
