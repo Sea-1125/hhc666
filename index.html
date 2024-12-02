@@ -3,78 +3,205 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple HTML Page</title>
+    <title>Cryptocurrency Tracker</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        /* 全局样式 */
+        * {
             margin: 0;
             padding: 0;
-            background: #f4f4f9;
-            color: #333;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            animation: fadeIn 1.5s ease;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+        }
+
+        /* 搜索栏样式 */
+        .search-bar {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            min-height: 100vh;
+            margin-bottom: 30px;
         }
-        header {
-            background: #4CAF50;
-            width: 100%;
-            padding: 10px 0;
-            text-align: center;
-            color: white;
-            font-size: 1.8rem;
-        }
-        .container {
-            max-width: 800px;
-            margin: 20px;
-            padding: 20px;
-            background: white;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            text-align: center;
-        }
-        img {
-            width: 100%;
-            max-width: 300px;
-            margin: 20px 0;
-            border-radius: 10px;
-        }
-        button {
-            padding: 10px 20px;
-            background: #4CAF50;
-            border: none;
-            border-radius: 5px;
-            color: white;
+
+        input {
+            padding: 15px 20px;
+            width: 300px;
             font-size: 1rem;
-            cursor: pointer;
-            transition: background 0.3s ease;
+            border: none;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            outline: none;
+            text-align: center;
+            transition: transform 0.3s ease, background 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
         }
-        button:hover {
-            background: #45a049;
+
+        input:focus {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
         }
-        footer {
+
+        button {
+            padding: 15px 25px;
             margin-top: 20px;
+            background: #1f8ef1;
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            box-shadow: 0 8px 20px rgba(31, 142, 241, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 30px rgba(31, 142, 241, 0.8);
+        }
+
+        /* 加密货币信息卡片 */
+        .crypto-info {
+            display: none;
+            margin-top: 20px;
+            padding: 30px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            animation: slideIn 1s ease;
+            max-width: 500px;
+        }
+
+        .crypto-info img {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 10px;
+            animation: fadeIn 1.5s ease;
+        }
+
+        .crypto-info h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .crypto-info p {
+            font-size: 1.2rem;
+            margin: 5px 0;
+        }
+
+        /* 动画 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 开发者信息 */
+        .developer-info {
+            position: absolute;
+            bottom: 20px;
+            text-align: center;
             font-size: 0.9rem;
-            color: #888;
+            color: #bbb;
+        }
+
+        .developer-info img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        .developer-info p {
+            margin: 5px 0;
+        }
+
+        .developer-info a {
+            color: #1f8ef1;
+            text-decoration: none;
+        }
+
+        .developer-info a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
-    <header>
-        Welcome to My Simple Page
-    </header>
-
-    <div class="container">
-        <h1>Hello, World!</h1>
-        <p>This is a simple HTML page example. You can add more content and customize it as you like!</p>
-        <img src="https://via.placeholder.com/300" alt="Placeholder Image">
-        <p>Click the button below to learn more:</p>
-        <button onclick="alert('You clicked the button!')">Click Me</button>
+    <h1>Cryptocurrency Tracker</h1>
+    <div class="search-bar">
+        <input type="text" id="crypto" placeholder="Enter cryptocurrency name">
+        <button onclick="fetchCrypto()">Search</button>
+    </div>
+    <div id="crypto-info" class="crypto-info">
+        <img id="crypto-icon" alt="Crypto Icon">
+        <h2 id="crypto-name"></h2>
+        <p id="crypto-price"></p>
+        <p id="crypto-change"></p>
+        <p id="crypto-volume"></p>
     </div>
 
-    <footer>
-        © 2024 Simple HTML Example
-    </footer>
+    <div class="developer-info">
+        <img src="https://i.imgur.com/3IvhwDC.jpeg" alt="Developer">
+        <p>Developer: Sea</p>
+        <p>Email: cxezysyf4843@gmail.com</p>
+        <p>Telegram: liwuyyds</p>
+        <p>© 2024 Sea Studio</p>
+    </div>
+
+    <script>
+        const apiKey = 'dfddbbb4-2f2a-43fd-8ad0-2d1c039aa789';
+
+        async function fetchCrypto() {
+            const crypto = document.getElementById('crypto').value.trim().toLowerCase();
+            if (!crypto) {
+                alert("Please enter a cryptocurrency name!");
+                return;
+            }
+
+            const url = `https://api.coingecko.com/api/v3/coins/${crypto}`;
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error("Cryptocurrency not found");
+                
+                const data = await response.json();
+
+                // Update UI with crypto data
+                document.getElementById('crypto-icon').src = data.image.large;
+                document.getElementById('crypto-name').textContent = data.name + ` (${data.symbol.toUpperCase()})`;
+                document.getElementById('crypto-price').textContent = `Current Price: $${data.market_data.current_price.usd}`;
+                document.getElementById('crypto-change').textContent = `24h Change: ${data.market_data.price_change_percentage_24h.toFixed(2)}%`;
+                document.getElementById('crypto-volume').textContent = `24h Volume: $${data.market_data.total_volume.usd.toLocaleString()}`;
+                
+                document.getElementById('crypto-info').style.display = 'block';
+            } catch (error) {
+                alert("Error fetching cryptocurrency data.");
+                console.error(error);
+            }
+        }
+    </script>
 </body>
 </html>
