@@ -29,8 +29,8 @@
             margin-bottom: 20px;
             animation: fadeIn 1.5s ease;
             text-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
-            text-align: center;  /* 居中对齐 */
-            width: 100%;  /* 确保在整个页面内居中 */
+            text-align: center;
+            width: 100%;
         }
 
         /* 搜索栏样式 */
@@ -154,7 +154,7 @@
 <body>
     <h1>Cryptocurrency Search</h1>
     <div class="search-bar">
-        <input type="text" id="crypto" placeholder="请输入加密货币名称，例如：bitcoin">
+        <input type="text" id="crypto" placeholder="请输入加密货币名称或简称，例如：bitcoin 或 btc">
         <button onclick="fetchCrypto()">查询</button>
     </div>
     <div id="crypto-info" class="crypto-info">
@@ -174,30 +174,35 @@
     </div>
 
     <script>
-        const apiKey = 'dfddbbb4-2f2a-43fd-8ad0-2d1c039aa789';
-
         async function fetchCrypto() {
             const crypto = document.getElementById('crypto').value.trim().toLowerCase();
             const developerInfo = document.getElementById('developer-info');
             if (!crypto) {
-                alert("请输入加密货币名称！");
+                alert("请输入加密货币名称，例如:btc");
                 return;
             }
 
-            const url = `https://api.coingecko.com/api/v3/coins/${crypto}`;
+            // 用于通过币种简称查询
+            const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${crypto}`;
 
             try {
                 const response = await fetch(url);
                 if (!response.ok) throw new Error("找不到该加密货币");
                 
                 const data = await response.json();
+                if (data.length === 0) {
+                    alert("未找到该加密货币，请检查名称或简称！");
+                    return;
+                }
 
+                const cryptoData = data[0]; // 获取查询到的第一个结果
+                
                 // 更新加密货币数据
-                document.getElementById('crypto-icon').src = data.image.large;
-                document.getElementById('crypto-name').textContent = data.name + ` (${data.symbol.toUpperCase()})`;
-                document.getElementById('crypto-price').textContent = `当前价格：$${data.market_data.current_price.usd}`;
-                document.getElementById('crypto-change').textContent = `24小时涨跌幅：${data.market_data.price_change_percentage_24h.toFixed(2)}%`;
-                document.getElementById('crypto-volume').textContent = `24小时交易量：$${data.market_data.total_volume.usd.toLocaleString()}`;
+                document.getElementById('crypto-icon').src = cryptoData.image;
+                document.getElementById('crypto-name').textContent = cryptoData.name + ` (${cryptoData.symbol.toUpperCase()})`;
+                document.getElementById('crypto-price').textContent = `当前价格：$${cryptoData.current_price}`;
+                document.getElementById('crypto-change').textContent = `24小时涨跌幅：${cryptoData.price_change_percentage_24h.toFixed(2)}%`;
+                document.getElementById('crypto-volume').textContent = `24小时交易量：$${cryptoData.total_volume.toLocaleString()}`;
                 
                 document.getElementById('crypto-info').style.display = 'block';
                 
